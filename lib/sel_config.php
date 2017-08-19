@@ -1,6 +1,6 @@
 <?php
 $hostname_db = "localhost";
-$database_db = "alr";
+$database_db = "plk40";
 $username_db = "postgres";
 $password_db = "HerculeS";
 

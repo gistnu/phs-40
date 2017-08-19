@@ -6,9 +6,9 @@
 include('config.php');
 
 
-$prov = $_GET['prov_name'];
-$amp = $_GET['amphoe_name'];
-$tam = $_GET['tambon_name'];
+
+$amp = $_GET['amphoe'];
+$tam = $_GET['tambon'];
 
 ?>
     <meta charset="utf-8">
@@ -158,22 +158,16 @@ $tam = $_GET['tambon_name'];
 
 
     <?php
-  $lat = 14.391688;
-  $longi = 101.137494;
-  $zoom = 6;
-if ($prov != ''  and  $amp == '') {
-  $result = pg_query( "select * from province_centroids where pv_tn like '%$prov'");
-  $arr = pg_fetch_array($result);
-  $lat = $arr[pv_lat];
-  $longi =  $arr[pv_lon];
-  $zoom = 10;
-}elseif ( $prov != '' and  $amp != '' and  $tam == '') {
+  $lat = 17.015474;
+  $longi = 100.600003;
+  $zoom = 9;
+if ($amp != '' and  $tam == '') {
   $result = pg_query( "select * from amphoe_centroids where ap_tn like '%$amp'");
   $arr = pg_fetch_array($result);
   $lat = $arr[ap_lat];
   $longi =  $arr[ap_lon];
   $zoom = 13;
-}elseif ( $prov != '' and  $amp != '' and  $tam != '') {
+}elseif ($amp != '' and  $tam != '') {
   $result = pg_query( "select * from tambon_centroids where tb_tn like '%$tam'");
   $arr = pg_fetch_array($result);
   $lat = $arr[tb_lat];
@@ -200,8 +194,8 @@ if ($prov != ''  and  $amp == '') {
 });
 
       map = new L.Map('map', {
-        center: new L.LatLng(16.986083, 100.556657),
-        zoom: 9,
+        center: new L.LatLng(<?php echo $lat; ?>, <?php echo $longi ; ?>),
+        zoom: <?php echo $zoom; ?>,
         layers: [mapquest, users, newUser]
       });
 	  
@@ -301,7 +295,7 @@ var geojson_layer = new L.GeoJSON.AJAX("select_point.php", { onEachFeature: onEa
         newUser.addLayer(marker);
         var form =  '<form id="inputform"  method="post" enctype="multipart/form-data" class="well">'+
               '<label><strong>จังหวัด:</strong> </label>'+
-              '<input type="text" class="span3" placeholder="" id="prov_nam"  name="prov_nam" value="<?php echo $prov; ?>" />'+
+              '<input type="text" class="span3" placeholder="" id="prov_nam"  name="prov_nam" value="พิษณุโลก" />'+
               '<label><strong>อำเภอ:</strong> </label>'+
               '<input type="text" class="span3" placeholder="" id="amp_nam"  name="amp_nam" value="<?php echo $amp; ?>"  />'+
               '<label><strong>ตำบล:</strong></label>'+
@@ -313,7 +307,7 @@ var geojson_layer = new L.GeoJSON.AJAX("select_point.php", { onEachFeature: onEa
               '<label><strong>หมู่ที่:</strong></label>'+
               '<input type="text" class="span3" placeholder="" id="moo_house"  name="moo_house"  />'+
               '<label><strong>รหัสบ้าน:</strong></label>'+
-              '<input type="number" class="span3" placeholder="" id="id_house"  name="id_house" />'+
+              '<input type="number" class="span3" placeholder="" id="id_house"  name="id_house" maxlength="10" />'+
 
               '<input style="display: none;" type="text" id="lat" name="lat" value="'+e.latlng.lat.toFixed(6)+'" />'+
               '<input style="display: none;" type="text" id="longi" name="longi" value="'+e.latlng.lng.toFixed(6)+'" /><br><br>'+

@@ -11,3 +11,12 @@ lyrClimate=1&
 lyrLand=1&
 lyrSoil=1&
 lyrDisaster=1&
+
+
+
+----
+http://localhost/plkmaps/mapquery.php?province2=65&amphoe2=6501&tambon2=0&module=siteRegister&lyrAdmin=1&lyrPlace=1&lyrBase=1&lyrImagery=1&lyrHealth=1&lyrWater=1&lyrClimate=1&lyrLand=1&lyrSoil=1&lyrDisaster=1&lyrTerain=1&lyrLandUse=1
+
+http://localhost/plkmaps/mapquery.php?province2=65&amphoe2=6503&tambon2=0&module=siteRegister&lyrAdmin=1&lyrPlace=1&lyrBase=1&lyrImagery=1&lyrHealth=1&lyrWater=1&lyrClimate=1&lyrLand=1&lyrSoil=1&lyrDisaster=1&lyrTerain=1&lyrLandUse=1
+
+http://localhost/plkmaps/mapquery.php?province2=65&amphoe2=6508&tambon2=0&module=siteRegister&lyrAdmin=1&lyrPlace=1&lyrBase=1&lyrImagery=1&lyrHealth=1&lyrClimate=1&lyrLand=1&lyrSoil=1&lyrDisaster=1&lyrTerain=1&lyrLandUse=1&lyrWater=1&lyrForest=1

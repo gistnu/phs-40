@@ -7,9 +7,14 @@ include('config.php');
 
 
 $prov = พิษณุโลก;
-$year = 2559;
+$amphoe_name = $_GET[amphoe];
+$tambol_name = $_GET[tambon];
 
-$amphoe_name = $_GET[amphoe_name2];
+$year = $_GET[year];
+
+if ($year == ''){
+	$year = 2559;
+}
 ?>
 
 <!DOCTYPE html>
@@ -82,20 +87,20 @@ ${demo.css}
 
  <?php 
 
- if ($tambol != '') {
- 	
-	 $result1 = pg_query("select *  from age_0_5_tm where tam_name like '%$tambol%' and  year_pop =  $year ; "); 
-	$chart_index = pg_fetch_array($result1);
+ if ($tambol_name != '') {
+    
+     $result1 = pg_query($db,"select *  from age_0_5_tm where pro_name like '%$prov%'  and amp_name like '%$amphoe_name' and tam_name like '%$tambol_name%' and  year_pop =  $year ; "); 
+    $chart_index = pg_fetch_array($result1);
 
  }elseif ($amphoe_name != '') {
- 	 $result1 = pg_query("select *  from age_0_5_ap where amp_name like '%$amphoe_name%' and  year_pop =  $year   ; "); 
-	$chart_index = pg_fetch_array($result1);
+     $result1 = pg_query($db,"select *  from age_0_5_ap where  pro_name like '%$prov%'  and amp_name like '%$amphoe_name' and  year_pop =  $year   ; "); 
+    $chart_index = pg_fetch_array($result1);
  }elseif ($prov != '') {
- 	 $result1 = pg_query("select *  from age_0_5_pv where pro_name like '%$prov%'  and  year_pop =  $year  ; "); 
-	$chart_index = pg_fetch_array($result1);
+     $result1 = pg_query($db,"select *  from age_0_5_pv where pro_name like '%$prov%'  and  year_pop =  $year  ; "); 
+    $chart_index = pg_fetch_array($result1);
  }else{
- 	$result1 = pg_query("select *  from age_0_5_th where  year_pop =  $year ; "); 
-	$chart_index = pg_fetch_array($result1);
+    $result1 = pg_query($db,"select *  from age_0_5_th where  year_pop =  $year ; "); 
+    $chart_index = pg_fetch_array($result1);
  }
 
 
@@ -103,6 +108,8 @@ ${demo.css}
 </head>
 <body>
 
+
+	<div class="col-md-12 ">
 	<div class="col-md-12 ">
 			<div class="x_panel">
 				<div id="map" style="width: 100%; height: 550px;" ></div>
@@ -112,7 +119,6 @@ ${demo.css}
 					<h2 class="page-head-line">กราฟแสดงข้อมูลประชากร</h2>
 					<div id="container"  style="width: 100%; height: 550px;"></div>
                 </div>
-	               <div class="row">
                 <div class="col-md-12">
 				
 					<table class="table table-striped table-hover ">
@@ -167,7 +173,9 @@ ${demo.css}
 						</table> 
 
                 </div>
-            </div>	
+                </div>
+
+
 	<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
 
    
@@ -229,6 +237,9 @@ $(document).ready(function () {
                     'จำนวน: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
             }
         },
+        credits: {
+            enabled: false
+        },
 
         series: [{
             name: 'ชาย',
@@ -247,7 +258,7 @@ $(document).ready(function () {
 
 
 	<script type="text/javascript">
-	var statesData =	<?php
+    var statesData =    <?php
 //-------------------------------------------------------------
 // * Name: PHP-PostGIS2GeoJSON  
 // * Purpose: GIST@NU (www.cgistln.nu.ac.th)
@@ -261,7 +272,7 @@ $(document).ready(function () {
     // Retrieve start point
     // Connect to database
 
-      $sql = "select *,ST_AsGeoJSON(geom) AS geojson from pop_plk40sim where amp_name like '%$amphoe_name';";
+       $sql = "select *,ST_AsGeoJSON(geom) AS geojson from age_0_5_tm a inner join pop_plk40sim b on a.tam_code = b.tam_code where b.tam_name like '%$tambol_name' and  b.amp_name like '%$amphoe_name' and b.pro_name = 'พิษณุโลก' and a.year_pop = $year;";
    
 
 
@@ -284,11 +295,11 @@ $(document).ready(function () {
             'properties' => array('code' => '4326')
          ),
             'properties' => array(
-			'gid' => $edge['gid'],
+            'gid' => $edge['gid'],
             'pv_code' => $edge['tam_code'],
             'prov_nam_t' => $edge['tam_name'],
-            'value_sum' => $edge['y59'],
-            'value' => number_format($edge['y59'])
+            'value_sum' => $edge['p_mf_total'],
+            'value' => number_format($edge['p_mf_total'])
          )
       );
       
@@ -302,9 +313,9 @@ $(document).ready(function () {
   echo json_encode($geojson);
 
 ?>
-	
-	
-	</script>
+    
+    
+    </script>
 	
 	
 	
@@ -316,8 +327,35 @@ var OpenStreetMap_BlackAndWhite = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-m
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
     
+ <?php   
+if ($tambol_name != '') {
+ 	 $result5 = pg_query($db,"select *  from tambon_centroids where tb_tn like '%$tambol_name' and ap_tn like '%$amphoe_name' and pv_tn = 'พิษณุโลก' ; "); 
+	$dd = pg_fetch_array($result5);
+	$lat = $dd[tb_lat]; 
+	$longi = $dd[tb_lon]; 
+	$zoom = 11;
+
+ }elseif ($amphoe_name != '') {
+
+ 	 $result5 = pg_query($db,"select *  from amphoe_centroids where ap_tn like '%$amphoe_name' and pv_tn = 'พิษณุโลก' ; "); 
+	$dd = pg_fetch_array($result5);
+	$lat = $dd[ap_lat]; 
+	$longi = $dd[ap_lon]; 
+	$zoom = 10;
+
+ }elseif ($prov != '') {
+ 	$lat = 16.986083; 
+	$longi = 100.556657;
+	$zoom = 9;
+ }else{
+ 	$lat = 16.986083; 
+	$longi = 100.556657;
+	$zoom = 9;
+ }
+?>
+
 OpenStreetMap_BlackAndWhite.addTo(map);
-map.setView([16.986083, 100.556657], 9);
+map.setView([<?php echo $lat ?>, <?php echo $longi ?>], <?php echo $zoom ?>);
 	
 	
 
@@ -332,7 +370,7 @@ map.setView([16.986083, 100.556657], 9);
 
 		
 		info.update = function (props) {
-			this._div.innerHTML = '<h3>แผนที่แสดงจำนวนประชากรปี 2559</h3>' +  (props ?
+			this._div.innerHTML = '<h3>แผนที่แสดงจำนวนประชากรปี <?php echo $year; ?></h3>' +  (props ?
 				'<b><center>ต. ' + props.prov_nam_t + '</b><br />' + props.value + ' คน'
 				: '');
 		};

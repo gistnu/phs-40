@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-	<title>PLK 4.0</title>
+	<title>PHS 4.0</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 	<!-- External lib: ExtJS -->
@@ -76,18 +76,26 @@ $setDefault = '<script>var center = "11140015,1901789";
 include "../lib/sel_config.php";
 conndb();
 
-
-$amphoe2 = $_GET['province2'];
-$tambon_name = $_GET['tambon_name'];
-
 function getdat($getVal, $getFiedlName) {
     $getsql = '';
-    
-        $getsql = "SELECT amp_nam_t as n, st_x(st_transform(st_centroid(geom),3857)) as x, st_y(st_transform(st_centroid(geom),3857)) as y, ST_Extent(geom) as b FROM ln9p_amp WHERE amp_code = '6501' group by n,x,y";
+    if (strlen($getVal) == 2) {
+        $getsql = "SELECT prov_nam_t as n, st_x(st_transform(st_centroid(geom),3857)) as x, st_y(st_transform(st_centroid(geom),3857)) as y, ST_Extent(geom) as b FROM ln9p_prov WHERE prov_code = '$getVal' group by n,x,y";
         $row = pg_fetch_array(pg_query($getsql));
         $sendname = $row[$getFiedlName];
         return $sendname;
-
+    }
+    elseif(strlen($getVal) == 4) {
+        $getsql = "SELECT amp_nam_t as n, st_x(st_transform(st_centroid(geom),3857)) as x, st_y(st_transform(st_centroid(geom),3857)) as y, ST_Extent(geom) as b FROM ln9p_amp WHERE amp_code = '$getVal' group by n,x,y";
+        $row = pg_fetch_array(pg_query($getsql));
+        $sendname = $row[$getFiedlName];
+        return $sendname;
+    }
+    elseif(strlen($getVal) == 6) {
+        $getsql = "SELECT tam_nam_t as n, st_x(st_transform(st_centroid(geom),3857)) as x, st_y(st_transform(st_centroid(geom),3857)) as y, ST_Extent(geom) as b FROM ln9p_tam WHERE tam_code = '$getVal' group by n,x,y";
+        $row = pg_fetch_array(pg_query($getsql));
+        $sendname = $row[$getFiedlName];
+        return $sendname;
+    }
 };
 
 function getbound($fetArr) {
@@ -152,7 +160,6 @@ function dataLoad($prov_id, $amp_id, $tam_id){
     elseif($prov_id > 0) {
         echo "<script>var queryTool='query_test3.php?pro=$prov_id'</script>";
         echo "<script>var queryLu='query_lu.php?pro=$prov_id'</script>";
-
         echo '<script>var filter_pro = "prov_code='.$prov_id.'";</script>';
         echo '<script>var filter_amp = "prov_code='.$prov_id.'";</script>';
         echo '<script>var filter_tam = "prov_code='.$prov_id.'";</script>';
@@ -223,6 +230,9 @@ foreach($_GET as $key => $value) {
     elseif($key == 'lyrSoil') {
         echo "<script>mapLayer.push('lyrSoil');</script>";
     }
+    elseif($key == 'lyrLandUse') {
+        echo "<script>mapLayer.push('lyrLandUse');</script>";
+    }	
     elseif($key == 'lyrDisaster') {
         echo "<script>mapLayer.push('lyrDisaster');</script>";
     }
@@ -231,6 +241,12 @@ foreach($_GET as $key => $value) {
 	}
 	elseif($key == 'lyrLand') {
 		echo "<script>mapLayer.push('lyrLand');</script>";
+	}
+	elseif($key == 'lyrForest') {
+		echo "<script>mapLayer.push('lyrForest');</script>";
+	}
+	elseif($key == 'lyrTerain') {
+		echo "<script>mapLayer.push('lyrTerain');</script>";
 	}
 		///end
     elseif($key == 'module') {
