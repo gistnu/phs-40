@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head><?php
-include('config.php');
+include('../libs/config.php');
 
 $lyrPlace = $_GET['lyrPlace'];
 $lyrHealth = $_GET['lyrHealth'];
@@ -87,7 +87,7 @@ $tambon2 = $_GET['tambon2'];
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
+                <a href="http://www2.cgistln.nu.ac.th/phs40/index.php" class="simple-text">
                     <img src="assets/img/logo_gist_260px_white.png" width="80%" alt="">
                 </a>
             </div>

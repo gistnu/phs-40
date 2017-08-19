@@ -5,7 +5,7 @@
     header ("Cache-Control: no-cache, must-revalidate");
     header ("Pragma: no-cache");
 
-include('config.php');
+include('../libs/config.php');
 
 
 

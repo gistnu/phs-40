@@ -3,7 +3,7 @@
   <head>
 
   <?php
-include('config.php');
+include('../libs/config.php');
 
 
 

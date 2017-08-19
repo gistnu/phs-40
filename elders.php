@@ -68,7 +68,7 @@
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
+                <a href="http://www2.cgistln.nu.ac.th/phs40/index.php" class="simple-text">
                     <img src="assets/img/logo_gist_260px_white.png" width="80%" alt="">
                 </a>
             </div>

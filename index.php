@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>  <?php
-include('config.php');
+include('../libs/config.php');
 ?>
 	<meta charset="utf-8" />
 	<link rel="icon" type="image/png" href="assets/img/logo_phitsanulok.gif">

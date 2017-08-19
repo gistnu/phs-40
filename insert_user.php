@@ -1,5 +1,5 @@
 <?php
-include('config.php');
+include('../libs/config.php');
 
 
 $prov_nam = $_POST['prov_nam'];
