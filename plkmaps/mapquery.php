@@ -73,7 +73,7 @@ $setDefault = '<script>var center = "11140015,1901789";
 		var lyrvisible_vill = true;
 		var lyrvisible_alr = true; </script>';
 
-include "../lib/sel_config.php";
+include "../../libs/sel_config.php";
 conndb();
 
 function getdat($getVal, $getFiedlName) {
